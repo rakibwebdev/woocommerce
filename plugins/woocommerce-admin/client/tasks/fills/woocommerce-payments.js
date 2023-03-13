@@ -16,61 +16,61 @@ import { Spinner } from '@woocommerce/components';
  */
 import { installActivateAndConnectWcpay } from './PaymentGatewaySuggestions/components/WCPay';
 
-const WoocommercePaymentsTaskItem = () => {
-	const { installAndActivatePlugins } = useDispatch( PLUGINS_STORE_NAME );
-	const { createNotice } = useDispatch( 'core/notices' );
+const WoocommercePaymentsTaskItem: React.FC = () => {
+	const { installAndActivatePlugins } = useDispatch(PLUGINS_STORE_NAME);
+	const { createNotice } = useDispatch('core/notices');
 
 	return (
 		<WooOnboardingTaskListItem id="woocommerce-payments">
-			{ ( { defaultTaskItem: DefaultTaskItem } ) => (
+			{({ defaultTaskItem: DefaultTaskItem }) => (
 				<DefaultTaskItem
 					// intercept the click on the task list item so that we don't have to see a intermediate page before installing woocommerce payments
-					onClick={ () => {
-						return new Promise( ( resolve, reject ) => {
+					onClick={() => {
+						return new Promise((resolve, reject) => {
 							return installActivateAndConnectWcpay(
 								reject,
 								createNotice,
 								installAndActivatePlugins
 							);
-						} );
-					} }
+						});
+					}}
 				/>
-			) }
+			)}
 		</WooOnboardingTaskListItem>
 	);
 };
 
-registerPlugin( 'woocommerce-admin-task-wcpay', {
+registerPlugin('woocommerce-admin-task-wcpay', {
 	scope: 'woocommerce-tasks',
 	render: WoocommercePaymentsTaskItem,
-} );
+});
 
-const ReadyWcPay = () => {
-	const { installAndActivatePlugins } = useDispatch( PLUGINS_STORE_NAME );
-	const { createNotice } = useDispatch( 'core/notices' );
+const ReadyWcPay: React.FC = () => {
+	const { installAndActivatePlugins } = useDispatch(PLUGINS_STORE_NAME);
+	const { createNotice } = useDispatch('core/notices');
 
-	useEffect( () => {
-		new Promise( ( resolve, reject ) => {
+	useEffect(() => {
+		new Promise((resolve, reject) => {
 			return installActivateAndConnectWcpay(
 				reject,
 				createNotice,
 				installAndActivatePlugins
 			);
-		} );
-	}, [ createNotice, installAndActivatePlugins ] );
+		});
+	}, [createNotice, installAndActivatePlugins]);
 
 	return (
 		<div
-			style={ {
+			style={{
 				height: '70vh',
 				display: 'flex',
 				flexDirection: 'column',
 				justifyContent: 'center',
 				alignItems: 'center',
-			} }
+			}}
 		>
 			<Spinner />
-			<div style={ { marginTop: '1rem' } }>
+			<div style={{ marginTop: '1rem' }}>
 				Preparing payment settings...
 			</div>
 		</div>
@@ -78,13 +78,13 @@ const ReadyWcPay = () => {
 };
 
 // shows up at http://host/wp-admin/admin.php?page=wc-admin&task=woocommerce-payments which is the default url for woocommerce-payments task
-const WoocommercePaymentsTaskPage = () => (
+const WoocommercePaymentsTaskPage: React.FC = () => (
 	<WooOnboardingTask id="woocommerce-payments">
 		<ReadyWcPay />
 	</WooOnboardingTask>
 );
 
-registerPlugin( 'woocommerce-admin-task-wcpay-page', {
+registerPlugin('woocommerce-admin-task-wcpay-page', {
 	scope: 'woocommerce-tasks',
 	render: WoocommercePaymentsTaskPage,
-} );
+});
